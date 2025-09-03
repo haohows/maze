@@ -763,6 +763,7 @@ function main(timestamp) {
     const INVERT_X = 1;      // 需要反向就設 -1
     const INVERT_Y = 1;
 
+
     // 動態校正偏移（按鈕或自動設定）
     let betaOffset = 0;     // 前後零點
     let gammaOffset = 0;     // 左右零點
