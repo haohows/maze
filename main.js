@@ -741,25 +741,38 @@ function main(timestamp) {
 // === motion control ===
 (() => {
     const btn = document.getElementById('enable-motion');
-    // const MAX_TILT = 15;      // 限制可用的傾斜角（度）
+
     const UI_GAIN = 0.8;     // 轉視覺旋轉的倍率（和原本一致）
     const gravity = 3.2;
     const friction = 0.01;
 
     // 靈敏控制參數（全域變數，可放 main.js 前面）
     const MAX_TILT = 25;   // 手機最大可用傾斜角（度）
-    const MAX_ROT = 25;    // 對應到遊戲邏輯的最大旋轉角（°，越大越靈敏）
-    const CURVE = 0.5;    // 曲線放大，小角度靈敏度（建議 0.45~0.65）
-    const INVERT_X = 1;    // 前後反向，如需反轉設 -1
-    const INVERT_Y = 1;    // 左右反向
 
-    // 角度映射函式（非線性）
-    function mapTilt(aDeg) {
-        const a = Math.max(-MAX_TILT, Math.min(MAX_TILT, aDeg)); // clamp
+
+    // —— 每軸獨立靈敏度 —— //
+    const MAX_TILT_X = 25;   // 前後(beta) 可用角度估計
+    const MAX_TILT_Y = 25;   // 左右(gamma) 可用角度估計
+
+    const MAX_ROT_X = 28;   // 映射到遊戲的最大“旋轉角” (前後更大，補償遲緩)
+    const MAX_ROT_Y = 20;   // 左右保持原本或略小
+
+    const CURVE_X = 0.50;    // 前後曲線（小角更敏感一些）
+    const CURVE_Y = 0.55;    // 左右曲線
+
+    const INVERT_X = 1;      // 需要反向就設 -1
+    const INVERT_Y = 1;
+
+    // 動態校正偏移（按鈕或自動設定）
+    let betaOffset = 0;     // 前後零點
+    let gammaOffset = 0;     // 左右零點
+
+    function mapTiltAxis(aDeg, maxTilt, maxRot, curve) {
+        const a = Math.max(-maxTilt, Math.min(maxTilt, aDeg));
         const s = Math.sign(a);
-        const n = Math.abs(a) / MAX_TILT; // 0~1
-        const m = Math.pow(n, CURVE);     // 曲線放大
-        return s * m * MAX_ROT;
+        const n = Math.abs(a) / maxTilt;      // 0..1
+        const m = Math.pow(n, curve);         // 非線性放大
+        return s * m * maxRot;                // 輸出到遊戲角度
     }
 
 
@@ -793,15 +806,18 @@ function main(timestamp) {
                 window.requestAnimationFrame(main);
             }
 
-            // 讀取手機傾斜角（°）
-            const gamma = e.gamma || 0; // 左右（+右傾 / -左傾）
-            const beta = e.beta || 0; // 前後（+前傾 / -後仰）
+            // 原始角
+            const rawGamma = (e.gamma ?? 0); // 左右
+            const rawBeta = (e.beta ?? 0); // 前後
 
-            // 映射為遊戲內使用的 rotationX / rotationY
-            const rotationY = INVERT_Y * mapTilt(gamma);
-            const rotationX = INVERT_X * mapTilt(beta);
+            // 扣掉偏移（校正中立握姿）
+            const gamma = rawGamma - gammaOffset;
+            const beta = rawBeta - betaOffset;
 
-            // 呼叫原本物理處理（推球＋視覺搖桿更新）
+            // 依各軸參數映射 → 遊戲用角度
+            const rotationY = INVERT_Y * mapTiltAxis(gamma, MAX_TILT_Y, MAX_ROT_Y, CURVE_Y); // 左右→Y
+            const rotationX = INVERT_X * mapTiltAxis(beta, MAX_TILT_X, MAX_ROT_X, CURVE_X); // 前後→X
+
             applyPhysicsFromRotation(rotationX, rotationY);
         }, { passive: true });
 
