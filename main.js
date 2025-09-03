@@ -754,10 +754,10 @@ function main(timestamp) {
     const MAX_TILT_X = 25;   // 前後(beta) 可用角度估計
     const MAX_TILT_Y = 25;   // 左右(gamma) 可用角度估計
 
-    const MAX_ROT_X = 30;   // 映射到遊戲的最大“旋轉角” (前後更大，補償遲緩)
-    const MAX_ROT_Y = 20;   // 左右保持原本或略小
+    const MAX_ROT_X = 32;   // 映射到遊戲的最大“旋轉角” (前後更大，補償遲緩)
+    const MAX_ROT_Y = 24;   // 左右保持原本或略小
 
-    const CURVE_X = 0.50;    // 前後曲線（小角更敏感一些）
+    const CURVE_X = 0.48;    // 前後曲線（小角更敏感一些）
     const CURVE_Y = 0.55;    // 左右曲線
 
     const INVERT_X = 1;      // 需要反向就設 -1
