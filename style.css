@@ -59,8 +59,8 @@ body {
 }
 
 #end {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border: 5px dashed var(--end-color);
   border-radius: 50%;
   display: none;
@@ -198,8 +198,7 @@ a:visited {
 
   /* 背景 1：細微顆粒，讓綠色不死板
      背景 2：重複小樹圖樣（base64 / 內嵌 SVG） */
-  background-image:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0) 60%),
+  background-image: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0) 60%),
     url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>\
 <rect width='28' height='28' fill='%232a7b3f'/>\
@@ -208,13 +207,9 @@ a:visited {
 <circle cx='18' cy='13' r='6' fill='%2336a165'/>\
 <rect x='12' y='14' width='4' height='8' rx='1' fill='%236b4f2a'/>\
 </svg>");
-  background-size:
-    20px 20px,
-    28px 28px; /* 顆粒 / 小樹尺寸 */
+  background-size: 20px 20px, 28px 28px; /* 顆粒 / 小樹尺寸 */
   background-repeat: repeat, repeat;
-  box-shadow:
-    inset 0 0 0 2px rgba(0, 0, 0, 0.06),
-    0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
 }
 
@@ -274,10 +269,10 @@ a:visited {
   position: absolute;
   left: 0.04em;
   top: 0.3em;
-  width: 0.92em;
-  height: 0.1em;
+  width: 1em;
+  height: 0.13em;
   background: #bfbfbf;
-  border-radius: 0.06em;
+  border-radius: 0.02em;
   box-shadow: inset 0 -0.03em 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -286,7 +281,7 @@ a:visited {
   position: absolute;
   bottom: 0;
   left: 0.22em;
-  width: 0.1em;
+  width: 0.15em;
   height: 0.9em;
   background: #bfbfbf;
   box-shadow: inset -0.03em 0 0 rgba(0, 0, 0, 0.1);
@@ -299,9 +294,9 @@ a:visited {
 .pillar::before {
   content: "";
   position: absolute;
-  left: -0.02em;
+  left: -0.025em;
   bottom: 0;
-  width: 0.14em;
+  width: 0.2em;
   height: 0.16em;
   background: #493e44;
   border-radius: 0.02em;
