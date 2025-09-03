@@ -101,7 +101,7 @@ let frictionY;
 
 const pathW = 25; // Path width
 const wallW = 10; // Wall width
-const ballSize = 10; // Width and height of the ball
+const ballSize = 16; // Width and height of the ball
 const holeSize = 18;
 
 const debugMode = false;

@@ -167,12 +167,12 @@ a:visited {
 
 .ball {
   position: absolute;
-  margin-top: -5px;
-  margin-left: -5px;
+  margin-top: -8px;     /* = ballSize / 2 */
+  margin-left: -8px;
   border-radius: 50%;
   background-color: var(--ball-color);
-  width: 10px;
-  height: 10px;
+  width: 16px;
+  height: 16px;
 }
 
 /* 樹叢感牆面 */
