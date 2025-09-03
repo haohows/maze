@@ -746,9 +746,9 @@ function main(timestamp) {
     const friction = 0.01;
 
     // 靈敏控制參數（全域變數，可放 main.js 前面）
-    const MAX_TILT = 25;   // 手機最大可用傾斜角（度）
-    const MAX_ROT = 20;    // 對應到遊戲邏輯的最大旋轉角（°，越大越靈敏）
-    const CURVE = 0.55;    // 曲線放大，小角度靈敏度（建議 0.45~0.65）
+    const MAX_TILT = 15;   // 手機最大可用傾斜角（度）
+    const MAX_ROT = 30;    // 對應到遊戲邏輯的最大旋轉角（°，越大越靈敏）
+    const CURVE = 0.45;    // 曲線放大，小角度靈敏度（建議 0.45~0.65）
     const INVERT_X = 1;    // 前後反向，如需反轉設 -1
     const INVERT_Y = 1;    // 左右反向
 
