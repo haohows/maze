@@ -750,8 +750,8 @@ function main(timestamp) {
 
     function applyPhysicsFromRotation(rotationXDeg, rotationYDeg) {
         // 視覺（如果你先前已拿掉迷宮旋轉，也沒關係，這行不會壞）
-        mazeElement.style.transform =
-            `rotateY(${rotationYDeg}deg) rotateX(${-rotationXDeg}deg)`;
+        // mazeElement.style.transform =
+        //     `rotateY(${rotationYDeg}deg) rotateX(${-rotationXDeg}deg)`;
 
         // 物理（與滑鼠版本一致）  :contentReference[oaicite:2]{index=2}
         accelerationX = gravity * Math.sin((rotationYDeg / 180) * Math.PI);
