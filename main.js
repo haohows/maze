@@ -137,7 +137,7 @@ const walls = [
   { column: 2, row: 6, horizontal: true, length: 1 },
 
   // Horizontal lines starting in 4th column
-  { column: 3, row: 3, horizontal: true, length: 1 },
+//   { column: 3, row: 3, horizontal: true, length: 1 },
   { column: 3, row: 8, horizontal: true, length: 3 },
 
   // Horizontal lines starting in 5th column
