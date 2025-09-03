@@ -747,12 +747,12 @@ function main(timestamp) {
     const friction = 0.008;
 
     // 靈敏控制參數（全域變數，可放 main.js 前面）
-    const MAX_TILT = 25;   // 手機最大可用傾斜角（度）
+    const MAX_TILT = 15;   // 手機最大可用傾斜角（度）
 
 
     // —— 每軸獨立靈敏度 —— //
-    const MAX_TILT_X = 25;   // 前後(beta) 可用角度估計
-    const MAX_TILT_Y = 25;   // 左右(gamma) 可用角度估計
+    const MAX_TILT_X = 15;   // 前後(beta) 可用角度估計
+    const MAX_TILT_Y = 15;   // 左右(gamma) 可用角度估計
 
     const MAX_ROT_X = 32;   // 映射到遊戲的最大“旋轉角” (前後更大，補償遲緩)
     const MAX_ROT_Y = 24;   // 左右保持原本或略小
