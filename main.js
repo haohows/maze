@@ -326,7 +326,7 @@ window.addEventListener("touchmove", function (event) {
     //     transform: rotateY(${rotationY}deg) rotateX(${-rotationX}deg)
     //   `;
 
-    const gravity = 2;
+    const gravity = 3.2;
     const friction = 0.008;
 
     accelerationX = gravity * Math.sin((rotationY / 180) * Math.PI);
@@ -744,7 +744,7 @@ function main(timestamp) {
 
     const UI_GAIN = 0.8;     // 轉視覺旋轉的倍率（和原本一致）
     const gravity = 3.2;
-    const friction = 0.01;
+    const friction = 0.008;
 
     // 靈敏控制參數（全域變數，可放 main.js 前面）
     const MAX_TILT = 25;   // 手機最大可用傾斜角（度）
@@ -754,7 +754,7 @@ function main(timestamp) {
     const MAX_TILT_X = 25;   // 前後(beta) 可用角度估計
     const MAX_TILT_Y = 25;   // 左右(gamma) 可用角度估計
 
-    const MAX_ROT_X = 28;   // 映射到遊戲的最大“旋轉角” (前後更大，補償遲緩)
+    const MAX_ROT_X = 30;   // 映射到遊戲的最大“旋轉角” (前後更大，補償遲緩)
     const MAX_ROT_Y = 20;   // 左右保持原本或略小
 
     const CURVE_X = 0.50;    // 前後曲線（小角更敏感一些）
