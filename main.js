@@ -113,10 +113,11 @@ let holeElements = [];
 resetGame();
 
 // Draw balls for the first time
-balls.forEach(({ x, y }) => {
+balls.forEach(({ x, y }, i) => {
+    const ballColors = ['red', 'green', 'blue', 'yellow'];
     const ball = document.createElement("div");
-    ball.setAttribute("class", "ball");
-    ball.style.cssText = `left: ${x}px; top: ${y}px; `;
+    ball.className = `ball ${ballColors[i % ballColors.length]}`;
+    ball.style.cssText = `left: ${x}px; top: ${y}px;`;
 
     mazeElement.appendChild(ball);
     ballElements.push(ball);
@@ -294,8 +295,8 @@ window.addEventListener("mousemove", function (event) {
         //     transform: rotateY(${rotationY}deg) rotateX(${-rotationX}deg)
         //   `;
 
-        const gravity = 2;
-        const friction = 0.01; // Coefficients of friction
+        const gravity = 3.2;
+        const friction = 0.008; // Coefficients of friction
 
         accelerationX = gravity * Math.sin((rotationY / 180) * Math.PI);
         accelerationY = gravity * Math.sin((rotationX / 180) * Math.PI);
@@ -326,7 +327,7 @@ window.addEventListener("touchmove", function (event) {
     //   `;
 
     const gravity = 2;
-    const friction = 0.01;
+    const friction = 0.008;
 
     accelerationX = gravity * Math.sin((rotationY / 180) * Math.PI);
     accelerationY = gravity * Math.sin((rotationX / 180) * Math.PI);
@@ -742,13 +743,13 @@ function main(timestamp) {
     const btn = document.getElementById('enable-motion');
     // const MAX_TILT = 15;      // 限制可用的傾斜角（度）
     const UI_GAIN = 0.8;     // 轉視覺旋轉的倍率（和原本一致）
-    const gravity = 2;
+    const gravity = 3.2;
     const friction = 0.01;
 
     // 靈敏控制參數（全域變數，可放 main.js 前面）
-    const MAX_TILT = 15;   // 手機最大可用傾斜角（度）
-    const MAX_ROT = 30;    // 對應到遊戲邏輯的最大旋轉角（°，越大越靈敏）
-    const CURVE = 0.45;    // 曲線放大，小角度靈敏度（建議 0.45~0.65）
+    const MAX_TILT = 25;   // 手機最大可用傾斜角（度）
+    const MAX_ROT = 25;    // 對應到遊戲邏輯的最大旋轉角（°，越大越靈敏）
+    const CURVE = 0.5;    // 曲線放大，小角度靈敏度（建議 0.45~0.65）
     const INVERT_X = 1;    // 前後反向，如需反轉設 -1
     const INVERT_Y = 1;    // 左右反向
 

@@ -175,6 +175,11 @@ a:visited {
   height: 16px;
 }
 
+.ball.red    { background-color: #e74c3c; }
+.ball.green  { background-color: #2ecc71; }
+.ball.blue   { background-color: #3498db; }
+.ball.yellow { background-color: #f1c40f; }
+
 /* 樹叢感牆面 */
 .wall {
   position: absolute;
