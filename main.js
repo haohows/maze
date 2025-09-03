@@ -747,12 +747,12 @@ function main(timestamp) {
     const friction = 0.008;
 
     // 靈敏控制參數（全域變數，可放 main.js 前面）
-    const MAX_TILT = 10;   // 手機最大可用傾斜角（度）
+    const MAX_TILT = 20;   // 手機最大可用傾斜角（度）
 
 
     // —— 每軸獨立靈敏度 —— //
-    const MAX_TILT_X = 10;   // 前後(beta) 可用角度估計
-    const MAX_TILT_Y = 10;   // 左右(gamma) 可用角度估計
+    const MAX_TILT_X = 20;   // 前後(beta) 可用角度估計
+    const MAX_TILT_Y = 20;   // 左右(gamma) 可用角度估計
 
     const MAX_ROT_X = 32;   // 映射到遊戲的最大“旋轉角” (前後更大，補償遲緩)
     const MAX_ROT_Y = 24;   // 左右保持原本或略小
@@ -833,10 +833,10 @@ function main(timestamp) {
                 typeof DeviceOrientationEvent.requestPermission === 'function') {
                 const res = await DeviceOrientationEvent.requestPermission();
                 if (res === 'granted') startMotion();
-            } else {
-                // Android 或桌面瀏覽器（不需顯式授權）
-                startMotion();
             }
+            hardMode = true;
+            resetGame();
+            startMotion();
         } catch (e) {
             console.warn('Motion permission error:', e);
         }
@@ -844,14 +844,20 @@ function main(timestamp) {
 
     // 探測支援度，決定是否顯示按鈕
     if (typeof window.DeviceOrientationEvent !== 'undefined') {
-        // iOS 需要點擊；其他環境直接啟用
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-            if (btn) {
-                btn.style.display = 'inline-block';
-                btn.addEventListener('click', enableMotion, { passive: true });
-            }
-        } else {
-            enableMotion();
+        // // iOS 需要點擊；其他環境直接啟用
+        // if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        //     if (btn) {
+        //         btn.style.display = 'inline-block';
+        //         btn.addEventListener('click', enableMotion, { passive: true });
+        //     }
+        // } else {
+        //     enableMotion();
+        // }
+
+        // 所有支援體感的裝置都顯示按鈕（包含 iOS、Android、桌機）
+        if (btn) {
+            btn.style.display = 'inline-block';
+            btn.addEventListener('click', enableMotion, { passive: true });
         }
     }
 })();
