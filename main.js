@@ -209,6 +209,7 @@ const walls = [
     // Vertical lines after the 9th column
     { column: 9, row: 1, horizontal: false, length: 1 },
     { column: 9, row: 5, horizontal: false, length: 2 }
+
 ].map((wall) => ({
     x: wall.column * (pathW + wallW),
     y: wall.row * (pathW + wallW),
@@ -705,26 +706,58 @@ function main(timestamp) {
         }
 
         // Win detection
-        if (
-            balls.every(
-                (ball) => distance2D(ball, { x: 350 / 2, y: 315 / 2 }) < 65 / 2
-            )
-        ) {
-            alert("你贏惹")
-            //   noteElement.innerHTML = `Congrats, you did it!
-            //     ${!hardMode ? "<p>Press H for hard mode</p>" : ""}
-            //     <p>
-            //       Follow me
-            //       <a href="https://twitter.com/HunorBorbely" , target="_top"
-            //         >@HunorBorbely</a
-            //       >
-            //     </p>`;
-            //   noteElement.style.opacity = 1;
-            gameInProgress = false;
+        // if (
+        //     balls.every(
+        //         (ball) => distance2D(ball, { x: 350 / 2, y: 315 / 2 }) < 65 / 2
+        //     )
+        // ) {
+        //     alert("你贏惹")
+        //     gameInProgress = false;
+        // } else {
+        //     previousTimestamp = timestamp;
+        //     window.requestAnimationFrame(main);
+        // }
+        // Win / Fail detection（新版規則）
+        // 判定中心與半徑
+        const center = { x: 350 / 2, y: 315 / 2 };
+        const radius = 65 / 2;
+
+        // 找出「目前在中心圈內」的所有球的顏色
+        const insideColors = balls.map((ball, i) => {
+            const isIn = distance2D(ball, center) < radius;
+            if (!isIn) return null;
+
+            const el = ballElements[i];
+            if (el.classList.contains('green')) return 'green';
+            if (el.classList.contains('blue')) return 'blue';
+            if (el.classList.contains('yellow')) return 'yellow';
+            if (el.classList.contains('red')) return 'red';
+            return 'unknown';
+        }).filter(Boolean);
+
+        // 只要有球進入就判定
+        if (insideColors.length > 0) {
+            const set = new Set(insideColors);
+            const isExactlyGBY =
+                set.size === 3 &&
+                set.has('green') && set.has('blue') && set.has('yellow');
+
+            if (isExactlyGBY) {
+                alert('成功：green + blue + yellow 同時到達！🎉');
+                gameInProgress = false;
+                // 若有停用體感：stopMotion && stopMotion();
+            } else {
+                alert('失敗：進入中心的組合不符規則。');
+                gameInProgress = false;
+                // 若有停用體感：stopMotion && stopMotion();
+            }
         } else {
+            // 尚無任何球進入中心，繼續跑下一幀
             previousTimestamp = timestamp;
             window.requestAnimationFrame(main);
         }
+
+
     } catch (error) {
         if (error.message == "The ball fell into a hole") {
             //   noteElement.innerHTML = `A ball fell into a black hole! Press space to reset the game.
@@ -854,7 +887,7 @@ function main(timestamp) {
         // } else {
         //     enableMotion();
         // }
-        
+
         // 所有支援體感的裝置都顯示按鈕（包含 iOS、Android、桌機）
         if (btn) {
             btn.style.display = 'inline-block';
