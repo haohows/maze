@@ -740,10 +740,28 @@ function main(timestamp) {
 // === motion control ===
 (() => {
     const btn = document.getElementById('enable-motion');
-    const MAX_TILT = 15;      // 限制可用的傾斜角（度）
+    // const MAX_TILT = 15;      // 限制可用的傾斜角（度）
     const UI_GAIN = 0.8;     // 轉視覺旋轉的倍率（和原本一致）
     const gravity = 2;
     const friction = 0.01;
+
+    // 靈敏控制參數（全域變數，可放 main.js 前面）
+    const MAX_TILT = 25;   // 手機最大可用傾斜角（度）
+    const MAX_ROT = 20;    // 對應到遊戲邏輯的最大旋轉角（°，越大越靈敏）
+    const CURVE = 0.55;    // 曲線放大，小角度靈敏度（建議 0.45~0.65）
+    const INVERT_X = 1;    // 前後反向，如需反轉設 -1
+    const INVERT_Y = 1;    // 左右反向
+
+    // 角度映射函式（非線性）
+    function mapTilt(aDeg) {
+        const a = Math.max(-MAX_TILT, Math.min(MAX_TILT, aDeg)); // clamp
+        const s = Math.sign(a);
+        const n = Math.abs(a) / MAX_TILT; // 0~1
+        const m = Math.pow(n, CURVE);     // 曲線放大
+        return s * m * MAX_ROT;
+    }
+
+
 
     // 將角度限制在 [-MAX_TILT, MAX_TILT]
     const clamp = (v, a) => Math.max(-a, Math.min(a, v));
@@ -773,15 +791,20 @@ function main(timestamp) {
                 gameInProgress = true;
                 window.requestAnimationFrame(main);
             }
-            // e.gamma：左右（- 左 / + 右），e.beta：前後（- 後仰 / + 前傾）
-            const gamma = clamp(e.gamma || 0, MAX_TILT);  // 左右
-            const beta = clamp((e.beta || 0) - 0, MAX_TILT); // 需要可在這裡做校正 offset
-            const rotationY = gamma * UI_GAIN;   // 對應原本 mouseDeltaX*0.8  :contentReference[oaicite:3]{index=3}
-            const rotationX = beta * UI_GAIN;   // 對應原本 mouseDeltaY*0.8
-            applyPhysicsFromRotation(rotationX, rotationY);
-        });
 
-        // 隱藏按鈕
+            // 讀取手機傾斜角（°）
+            const gamma = e.gamma || 0; // 左右（+右傾 / -左傾）
+            const beta = e.beta || 0; // 前後（+前傾 / -後仰）
+
+            // 映射為遊戲內使用的 rotationX / rotationY
+            const rotationY = INVERT_Y * mapTilt(gamma);
+            const rotationX = INVERT_X * mapTilt(beta);
+
+            // 呼叫原本物理處理（推球＋視覺搖桿更新）
+            applyPhysicsFromRotation(rotationX, rotationY);
+        }, { passive: true });
+
+        // 隱藏啟用按鈕（若存在）
         if (btn) btn.style.display = 'none';
     }
 
