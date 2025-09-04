@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="style.css" />
-  </head>
+</head>
 
-  <body>
+<body>
     <div id="center">
-      <div id="game">
-        <div id="maze">
-          <div id="end"></div>
-          <div class="torii ">
-            <div class="red-two"></div>
-            <div class="pillar"></div>
-            <div class="pillar left"></div>
-          </div>
+        <div id="stage">
+            <div id="game">
+                <div id="maze">
+                    <div id="end"></div>
+                    <div class="torii ">
+                        <div class="red-two"></div>
+                        <div class="pillar"></div>
+                        <div class="pillar left"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="infoArea">
+
+                <div id="joystick">
+                    <div class="joystick-arrow"></div>
+                    <div class="joystick-arrow"></div>
+                    <div class="joystick-arrow"></div>
+                    <div class="joystick-arrow"></div>
+                    <div id="joystick-head"></div>
+                </div>
+
+                <button id="enable-motion" aria-label="Enable motion">
+                    啟用體感操控
+                </button>
+            </div>
         </div>
-      </div>
-      <div id="joystick">
-        <div class="joystick-arrow"></div>
-        <div class="joystick-arrow"></div>
-        <div class="joystick-arrow"></div>
-        <div class="joystick-arrow"></div>
-        <div id="joystick-head"></div>
-      </div>
-      <button id="enable-motion" aria-label="Enable motion" style="margin-top: 25px; padding: 8px 12px; border-radius: 10px; border: none; background: #7d82b8; color: white; display: none">
-        啟用體感操控
-      </button>
     </div>
 
-    <script src="main.js"></script>
-  </body>
+    <script src="main_optimized.js"></script>
+</body>
+
 </html>

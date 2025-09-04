@@ -29,6 +29,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   height: 100%;
 }
 
@@ -41,8 +42,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  background: #000;
+  /* flex-direction: column; */
 }
 
 #maze {
@@ -64,6 +64,13 @@ body {
   display: none;
 }
 
+.infoArea {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #joystick {
   position: relative;
   background-color: var(--joystick-color);
@@ -73,8 +80,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 50px 50px 0px;
-  grid-row: 2;
+  margin: 0px 30px 0px;
+  /* grid-row: 2; */
 }
 
 #joystick-head {
@@ -163,6 +170,15 @@ a:visited {
   color: inherit;
 }
 
+#enable-motion {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  background: #7d82b8;
+  color: white;
+  display: none;
+}
+
 .ball {
   position: absolute;
   margin-top: -8px; /* = ballSize / 2 */
@@ -187,7 +203,7 @@ a:visited {
   background-color: #f1c40f;
 }
 
-.black-hole {
+/* .black-hole {
   position: absolute;
   margin-top: -9px;
   margin-left: -9px;
@@ -195,6 +211,68 @@ a:visited {
   background-color: black;
   width: 18px;
   height: 18px;
+} */
+
+/* === 邪惡紅眼黑洞 === */
+.black-hole {
+  position: absolute;
+  margin-top: -9px; /* 保持與 JS 的 holeSize=18 一致 */
+  margin-left: -9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 45% 45%, #000 40%, #111 60%, #000 61%) /* 深淺層次 */,
+    radial-gradient(circle at 50% 60%, rgba(255, 0, 0, 0.18), transparent 62%); /* 陰紅光 */
+}
+
+/* 兩顆紅眼：用偽元素畫，內建微微眯斜 */
+.black-hole::before,
+.black-hole::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  width: 5px;
+  height: 4px;
+  border-radius: 60% 60% 45% 45% / 65% 65% 35% 35%; /* 杏仁眼形 */
+  background: radial-gradient(circle, #ff4d4f 45%, #b10000 70%);
+  filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.8));
+  transform-origin: center;
+}
+
+.black-hole::before {
+  right: 3px;
+  transform: skewX(-18deg) rotate(var(--eye-tilt-left, 12deg));
+  animation: blink-left 3s infinite;
+}
+
+.black-hole::after {
+  right: 3px;
+  left: 3px;
+  transform: skewX(18deg) rotate(var(--eye-tilt-right, -12deg));
+  animation: blink-right 3s infinite;
+}
+
+/* 眨眼動畫（輕微擠壓） */
+@keyframes blink-left {
+  0%,
+  92%,
+  100% {
+    transform: skewX(-18deg) rotate(var(--eye-tilt-left, 12deg)) scaleY(1);
+  }
+  96% {
+    transform: skewX(-18deg) rotate(var(--eye-tilt-left, 12deg)) scaleY(0.12);
+  }
+}
+@keyframes blink-right {
+  0%,
+  92%,
+  100% {
+    transform: skewX(18deg) rotate(var(--eye-tilt-right, -12deg)) scaleY(1);
+  }
+  96% {
+    transform: skewX(18deg) rotate(var(--eye-tilt-right, -12deg)) scaleY(0.12);
+  }
 }
 
 /* 鳥居 torii 樣式 */
@@ -281,7 +359,8 @@ a:visited {
 
   /* 背景 1：細微顆粒，讓綠色不死板
      背景 2：重複小樹圖樣（base64 / 內嵌 SVG） */
-  background-image: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0) 60%),
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0) 60%),
     url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'>\
 <rect width='28' height='28' fill='%232a7b3f'/>\
@@ -290,9 +369,13 @@ a:visited {
 <circle cx='18' cy='13' r='6' fill='%2336a165'/>\
 <rect x='12' y='14' width='4' height='8' rx='1' fill='%236b4f2a'/>\
 </svg>");
-  background-size: 20px 20px, 28px 28px; /* 顆粒 / 小樹尺寸 */
+  background-size:
+    20px 20px,
+    28px 28px; /* 顆粒 / 小樹尺寸 */
   background-repeat: repeat, repeat;
-  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
 }
 
@@ -313,4 +396,20 @@ a:visited {
 }
 .wall::after {
   bottom: -5px;
+}
+
+/* 等比縮放容器 */
+#stage {
+  /* 初始不縮放 */
+  --scale: 1;
+  transform: scale(var(--scale));
+  transform-origin: top center;
+  /* 讓縮放後仍以內容原始寬高排版，而不是被父層擠壓 */
+  width: max-content;
+  height: max-content;
+}
+
+/* 防止外層壓縮導致換行 */
+#center {
+  overflow: hidden; /* 小螢幕時避免出現滾動條抖動 */
 }
